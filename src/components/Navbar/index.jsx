@@ -18,17 +18,19 @@ const Navbar = ({ children, leftContent, title }) => {
               direction='row'
               justify='flex-start'
               alignItems='center'
-              spacing={2}
+              spacing={3}
             >
               {leftContent && <Grid item>{leftContent}</Grid>}
 
               <Grid item>
                 <Hidden xsDown>
-                  <Typography variant='h6'>{`${APP_NAME} - Login`}</Typography>
+                  <Typography variant='h6'>{`${APP_NAME}${
+                    title ? ` - ${title}` : ''
+                  }`}</Typography>
                 </Hidden>
 
                 <Hidden smUp>
-                  <Typography variant='h6'>{title}</Typography>
+                  <Typography variant='h6'>{title || ''}</Typography>
                 </Hidden>
               </Grid>
             </Grid>
