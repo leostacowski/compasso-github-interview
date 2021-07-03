@@ -7,8 +7,8 @@ import CustomTheme from '~/theme'
 
 const App = () => (
   <>
-    <CssBaseline />
     <ThemeProvider theme={CustomTheme}>
+      <CssBaseline />
       <RoutedContent />
     </ThemeProvider>
   </>

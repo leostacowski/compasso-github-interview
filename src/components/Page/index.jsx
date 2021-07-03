@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { Grid } from '@material-ui/core'
 import { APP_NAME } from '~/config'
 
 const Page = ({ children, title }) => {
@@ -6,7 +7,13 @@ const Page = ({ children, title }) => {
     document.title = `${APP_NAME}${title ? ` - ${title}` : ''}`
   })
 
-  return <>{children}</>
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        {children}
+      </Grid>
+    </Grid>
+  )
 }
 
 export default Page

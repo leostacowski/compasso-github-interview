@@ -1,10 +1,11 @@
 import { AppBar, Toolbar, Grid, Hidden, Typography } from '@material-ui/core'
 
 import { APP_NAME } from '~/config'
+import classes from './navbar.module.scss'
 
 const Navbar = ({ children, leftContent, title }) => {
   return (
-    <AppBar>
+    <AppBar className={classes['app-bar']} position='static'>
       <Toolbar>
         <Grid
           container
@@ -29,9 +30,11 @@ const Navbar = ({ children, leftContent, title }) => {
                   }`}</Typography>
                 </Hidden>
 
-                <Hidden smUp>
-                  <Typography variant='h6'>{title || ''}</Typography>
-                </Hidden>
+                {title && (
+                  <Hidden smUp>
+                    <Typography variant='h6'>{title}</Typography>
+                  </Hidden>
+                )}
               </Grid>
             </Grid>
           </Grid>
