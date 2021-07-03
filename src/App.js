@@ -1,16 +1,16 @@
 import React from 'react'
-import { Grid, CssBaseline } from '@material-ui/core'
+import { CssBaseline } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/styles'
 
-import Navbar from '~/components/Navbar'
-import RoutedContent from '~/routes'
+import { RoutedContent } from '~/router'
+import CustomTheme from '~/theme'
 
 const App = () => (
   <>
     <CssBaseline />
-    <Navbar />
-    <Grid container>
+    <ThemeProvider theme={CustomTheme}>
       <RoutedContent />
-    </Grid>
+    </ThemeProvider>
   </>
 )
 

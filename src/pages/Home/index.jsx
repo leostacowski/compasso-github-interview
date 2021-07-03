@@ -1,12 +1,14 @@
 import { Grid } from '@material-ui/core'
 
+import { Page } from '~/components'
+
 const Home = () => {
   return (
-    <Grid container>
-      <Grid item xs={12}>
-        hi
+    <Page title='Home'>
+      <Grid container>
+        <Grid item xs={12}></Grid>
       </Grid>
-    </Grid>
+    </Page>
   )
 }
 
