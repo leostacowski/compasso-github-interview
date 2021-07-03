@@ -1,23 +1,25 @@
 import { Container, Grid, Typography, Button, Icon } from '@material-ui/core'
 
 import { Page, Navbar } from '~/components'
-import LoginImage from '~/assets/images/login.png'
-import { APP_NAME } from '~/config'
 
-import classes from './login.module.scss'
+import NotFoundImage from '~/assets/images/404.png'
+import classes from './not-found.module.scss'
+import { useHistory } from 'react-router'
 
 const Login = () => {
+  const history = useHistory()
+
   return (
-    <Page title='Login'>
-      <Navbar title='Login' />
+    <Page title='Página não encontrada'>
+      <Navbar title='Página não encontrada' />
 
       <Container className={classes['content-container']}>
         <Grid container justify='center' alignItems='center' spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <img
-              className={classes['login-image']}
-              alt='Ícone de login.'
-              src={LoginImage}
+              className={classes['not-found-image']}
+              alt='Ícone de erro 404.'
+              src={NotFoundImage}
             />
           </Grid>
 
@@ -25,22 +27,23 @@ const Login = () => {
             <Grid container direction='column' alignItems='center' spacing={1}>
               <Grid item>
                 <Typography variant='h4'>
-                  <strong>Bem vindo(a)!</strong>
+                  <strong>Ops...</strong>
                 </Typography>
               </Grid>
 
               <Grid item>
-                <Typography variant='h6'>O {APP_NAME} te aguarda 😉</Typography>
+                <Typography variant='h6'>Esta página não existe 🕵️‍♂️</Typography>
               </Grid>
 
-              <Grid item className={classes['login-button']}>
+              <Grid item className={classes['not-found-button']}>
                 <Button
-                  endIcon={<Icon>open_in_new</Icon>}
+                  onClick={() => history.push('/')}
+                  endIcon={<Icon>home</Icon>}
                   size='large'
                   variant='contained'
                   color='secondary'
                 >
-                  Fazer login
+                  Ir para página inicial
                 </Button>
               </Grid>
             </Grid>
