@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useHistory } from 'react-router'
 
 import {
   Container,
@@ -25,6 +26,7 @@ const Home = () => {
   const [errorMessage, setErrorMessage] = useState('')
   const [inputQuery, setInputQuery] = useState('')
 
+  const history = useHistory()
   const setUser = userStore(state => state.setUser)
   const setRepos = userStore(state => state.setRepos)
   const setStarred = userStore(state => state.setStarred)
@@ -43,15 +45,17 @@ const Home = () => {
       .then(response => {
         const { data } = response
         setUser(data)
-
         clearStates()
+        history.push(`/user/${data.login}`)
       })
       .catch(err => {
         if (err?.response?.status === 404)
-          setErrorMessage(`Nenhum perfil "${inputQuery}" foi encontrado 😯`)
+          setErrorMessage(
+            `Nenhum perfil com o nome "${inputQuery}" foi encontrado 😯`
+          )
         else
           setErrorMessage(
-            `Ocorreu um erro inesperado ao fazer a busca pelo perfil "${inputQuery}" 🤔`
+            `Ocorreu um erro inesperado ao fazer a busca pelo perfil com o nome "${inputQuery}" 🤔`
           )
 
         setShowErrorDialog(true)
