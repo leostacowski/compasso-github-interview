@@ -1,12 +1,57 @@
+import { useEffect } from 'react'
 import { Container, Grid, Typography, Button, Icon } from '@material-ui/core'
 
 import { Page, Navbar } from '~/components'
 import LoginImage from '~/assets/images/login.png'
-import { APP_NAME } from '~/config'
+import { APP_NAME, GITHUB_BASE_URL } from '~/config'
+import { getGithubClientKeys } from '~/utilities'
+import { authStore } from '~/store/auth'
+import githubApi from '~/services/github'
 
 import classes from './login.module.scss'
 
-const Login = () => {
+const Login = ({ location }) => {
+  const loginCode = authStore(state => state.loginCode)
+  const setLoginCode = authStore(state => state.setLoginCode)
+  const logged = authStore(state => state.logged)
+
+  const onLoginAction = () => {
+    const { client_id, client_id_secret } = getGithubClientKeys()
+
+    const baseUrl = `${GITHUB_BASE_URL}/login/oauth/authorize`
+    const params = [
+      `client_id=${client_id}`,
+      `client_id_secret=${client_id_secret}`,
+    ].join('&')
+
+    window.open(`${baseUrl}?${params}`, 'Login pelo Github', 'menuBar=false')
+  }
+
+  useEffect(() => {
+    if (loginCode && !logged) {
+      const { client_id, client_id_secret } = getGithubClientKeys()
+
+      githubApi
+        .post(`/login/oauth/access_token`, {
+          client_id,
+          client_secret: client_id_secret,
+          code: loginCode,
+        })
+        .then(response => {
+          console.log(response)
+        })
+    }
+  }, [logged, loginCode])
+
+  useEffect(() => {
+    const loginTokenParam = new URLSearchParams(location.search).get('code')
+
+    if (!loginCode && loginTokenParam) {
+      setLoginCode(loginTokenParam)
+      window.close()
+    }
+  })
+
   return (
     <Page title='Login'>
       <Navbar title='Login' />
@@ -35,6 +80,7 @@ const Login = () => {
 
               <Grid item className={classes['login-button']}>
                 <Button
+                  onClick={onLoginAction}
                   endIcon={<Icon>open_in_new</Icon>}
                   size='large'
                   variant='contained'
