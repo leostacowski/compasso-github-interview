@@ -12,7 +12,7 @@ import {
   Icon,
 } from '@material-ui/core'
 
-import { Page, Navbar } from '~/components'
+import { Page, Navbar, Dialog } from '~/components'
 import { APP_NAME } from '~/config'
 import { userStore } from '~/store/user'
 import { githubApi } from '~/services/github'
@@ -21,17 +21,13 @@ import classes from './home.module.scss'
 
 const Home = () => {
   const [loading, setLoading] = useState(false)
+  const [showErrorDialog, setShowErrorDialog] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
   const [inputQuery, setInputQuery] = useState('')
 
   const setUser = userStore(state => state.setUser)
   const setRepos = userStore(state => state.setRepos)
   const setStarred = userStore(state => state.setStarred)
-
-  const clearUserStorage = () => {
-    setUser(undefined)
-    setRepos(undefined)
-    setStarred(undefined)
-  }
 
   const clearStates = () => {
     setLoading(false)
@@ -51,8 +47,15 @@ const Home = () => {
         clearStates()
       })
       .catch(err => {
+        if (err?.response?.status === 404)
+          setErrorMessage(`Nenhum perfil "${inputQuery}" foi encontrado 😯`)
+        else
+          setErrorMessage(
+            `Ocorreu um erro inesperado ao fazer a busca pelo perfil "${inputQuery}" 🤔`
+          )
+
+        setShowErrorDialog(true)
         setLoading(false)
-        console.log(err)
       })
   }
 
@@ -69,14 +72,23 @@ const Home = () => {
   }
 
   useEffect(() => {
-    clearUserStorage()
-  }, [])
+    setUser()
+    setRepos()
+    setStarred()
+  }, [setRepos, setStarred, setUser])
 
   return (
     <Page title='Página inicial'>
       <Navbar title='Página inicial' />
 
       <Container className={classes['content-container']}>
+        <Dialog
+          show={showErrorDialog}
+          onClose={() => setShowErrorDialog(false)}
+          title='Ops...'
+          content={errorMessage}
+        />
+
         <Grid container justify='center' alignItems='center' spacing={2}>
           <Grid item xs={12} sm={6} md={4}>
             <img

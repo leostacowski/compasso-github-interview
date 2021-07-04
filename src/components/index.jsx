@@ -1,4 +1,5 @@
 import Page from './Page'
 import Navbar from './Navbar'
+import Dialog from './Dialog'
 
-export { Navbar, Page }
+export { Page, Navbar, Dialog }
